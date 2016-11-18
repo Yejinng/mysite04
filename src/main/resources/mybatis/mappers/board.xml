@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<select id="getList" resultType="boardvo">
+		<![CDATA[
+		 select no, title, hit, reg_date, name, depth, users_no 
+			 from (select rownum as rn, no, title, hit, reg_date, name, depth, users_no
+			 from (select a.no, a.title, a.hit, to_char(reg_date, 'yyyy-mm-dd hh:mi:ss')as reg_date, b.name, a.depth, a.USERS_NO 
+			 from board a, users b
+			 where a.USERS_NO = b.NO
+			 order by group_no desc, order_no asc))
+			 where (#{page }-1)*#{size }+1 <= rn and rn <= #{page }*#{size }
+		]]>
+
+	</select>
+	
+	<insert id="insert" parameterType="boardvo">
+		<choose>
+			<when test="groupNo == null">
+				<![CDATA[
+				insert into board 
+				values ( board_seq.nextval, #{title }, #{content }, sysdate, 0, nvl((select max(group_no) from board),0) + 1, 1, 0, #{userNo })	
+				]]>
+		<!-- guestbook_seq.currval대신에 #{no } 써도됨  --> 
+			</when>
+			<otherwise>
+				<![CDATA[
+				insert into board 
+				values (board_seq.nextval, #{title }, #{content }, sysdate, 0, #{groupNo }, #{orderNo }, #{depth }, #{userNO })
+				]]>
+		<!-- guestbook_seq.currval대신에 #{no } 써도됨  --> 
+			</otherwise>
+		</choose>
+	</insert>
+
+	<delete id="delete" parameterType="boardvo">
+	<![CDATA[
+	delete from guestbook
+	where no = #{no }
+	and password = #{password }
+	]]>
+
+	</delete>
+	
+	
+</mapper>

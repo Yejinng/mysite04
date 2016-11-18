@@ -27,6 +27,10 @@ public class BoardService {
 	public void updateHit(Long boardNo) {
 		boardDao.updateHit(boardNo);
 	}
+	
+	public void insert(BoardVo vo ) {
+		boardDao.insert(vo);
+	}
 
 	public Map<String, Object> getList(Integer currentPage, String keyword ) {
 		
@@ -57,5 +61,6 @@ public class BoardService {
 		
 		return map;
 	}
+
 	
 }

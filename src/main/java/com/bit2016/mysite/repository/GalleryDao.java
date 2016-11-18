@@ -23,12 +23,10 @@ public class GalleryDao {
 	}
 
 	public List<GalleryVo> getList() {
-		System.out.println("gallery.getList");
 		return sqlSession.selectList("gallery.getList");
 	}
 	
 	public GalleryVo view(Long no){
-		System.out.println(no);
 		return sqlSession.selectOne("gallery.view",no);
 	}
 	

@@ -22,7 +22,7 @@
 					<h2>사진 올리기</h2>
 				</div>
 			</div>
-					<form id="form" name="form" method="post" action="upload" enctype="multipart/form-data" >
+					<form id="form" name="form" method="post" action="upload" enctype="multipart/form-data" style="margin:50px auto">
 					<label class="block-label" for="comments">comment</label><br>
 					<input type="text" name="comments" value="">
 					<br><br>

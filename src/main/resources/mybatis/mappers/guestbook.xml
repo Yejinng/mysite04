@@ -3,7 +3,7 @@
 
 <mapper namespace="guestbook">
 
-	<select id="getList" resultType="guestbookVo">
+	<select id="getList" resultType="guestbookvo">
 		<![CDATA[
 		select no, name, content, password, to_char(reg_date, 'yyyy-mm-dd hh:mi:ss') as regDate
 		from guestbook

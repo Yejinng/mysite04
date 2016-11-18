@@ -8,9 +8,11 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
 	xmlns:mvc="http://www.springframework.org/schema/mvc">
 
+	<!-- auto proxy -->
+	<aop:aspectj-autoproxy />
 	<!-- validator, conversionService, messageConverter를 자동으로 등록 -->
 	<mvc:annotation-driven>
-		<!-- message converters-->
+		<!-- message converters -->
 		<mvc:message-converters>
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
 				<property name="supportedMediaTypes">
@@ -28,11 +30,10 @@
 				</property>
 			</bean>
 		</mvc:message-converters>
-		
+
 		<!-- argument resolver -->
 		<mvc:argument-resolvers>
-			<bean
-				class="com.bit2016.security.AuthUserHandlerMethodArgumentResolver" />
+			<bean class="com.bit2016.security.AuthUserHandlerMethodArgumentResolver" />
 		</mvc:argument-resolvers>
 
 	</mvc:annotation-driven>
@@ -42,7 +43,7 @@
 
 	<!-- annotation setting -->
 	<context:annotation-config />
-	
+
 	<!-- the mvc resources tag does the magic -->
 	<mvc:resources mapping="/gallery/assets/**" location="file:/upload/" />
 
@@ -60,7 +61,7 @@
 		<property name="suffix" value=".jsp" />
 		<property name="order" value="1" />
 	</bean>
-	
+
 	<!-- 멀티파트 리졸버 -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -71,7 +72,17 @@
 		<!-- defaultEncoding -->
 		<property name="defaultEncoding" value="utf-8" />
 	</bean>
-	
+
+	<!-- 6. MessageSource -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="basenames">
+			<list>
+				<value>messages/messages_ko</value>
+			</list>
+		</property>
+	</bean>
 
 	<!-- Interceptors -->
 	<mvc:interceptors>

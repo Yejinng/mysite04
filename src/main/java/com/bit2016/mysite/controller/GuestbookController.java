@@ -61,7 +61,7 @@ public class GuestbookController {
 			return "redirect:/user/loginform";
 		}
 		System.out.println(vo);
-		guestbookService.delelte(vo);
+		guestbookService.delete(vo);
 		return "redirect:/guestbook";
 	}
 	

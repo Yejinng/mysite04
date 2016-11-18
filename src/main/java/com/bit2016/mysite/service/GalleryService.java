@@ -32,7 +32,6 @@ public class GalleryService {
 		galleryDao.delete(no);
 	}
 	public GalleryVo view(Long no) {
-		System.out.println(no);
 		return galleryDao.view(no);
 	}
 	public String restore(MultipartFile multipartFile, String comments) {

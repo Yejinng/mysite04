@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bit2016.mysite.vo.BoardVo;
@@ -16,6 +18,9 @@ import com.bit2016.mysite.vo.BoardVo;
 @Repository
 public class BoardDao {
 
+	@Autowired
+	private SqlSession sqlSession;
+	
 	private Connection getConnection() throws SQLException {
 		Connection conn = null;
 		try {
@@ -30,52 +35,9 @@ public class BoardDao {
 		return conn;
 	}
 
-	public void insert(BoardVo vo) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = getConnection();
-			
-			if (vo.getGroupNo() == null) {
-				// 신규
-				String sql = "insert into board values ( board_seq.nextval, ?, ?, sysdate, 0, nvl((select max(group_no) from board),0)+1, 1, 0, ?)";
-				pstmt = conn.prepareStatement(sql);
-
-				pstmt.setString(1, vo.getTitle());
-				pstmt.setString(2, vo.getContent());
-				pstmt.setLong(3, vo.getUserNo());
-
-			} else {
-				// 답글
-				String sql = "insert into board values (board_seq.nextval, ?, ?, sysdate, 0, ?, ?, ?, ?)";
-				pstmt = conn.prepareStatement(sql);
-
-				pstmt.setString(1, vo.getTitle());
-				pstmt.setString(2, vo.getContent());
-				pstmt.setInt(3, vo.getGroupNo());
-				pstmt.setInt(4, vo.getOrderNo());
-				pstmt.setInt(5, vo.getDepth());
-				pstmt.setLong(6, vo.getUserNo());
-
+	public int insert(BoardVo vo) {
+		return sqlSession.insert("board.insert", vo);
 			}
-
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
-		}
-	}
 
 	public void increaseGroupOrder( Integer groupNo, Integer orderNo ){
 		Connection conn = null;

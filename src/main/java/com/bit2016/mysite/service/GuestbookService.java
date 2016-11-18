@@ -26,7 +26,7 @@ public class GuestbookService {
 		guestbookDao.insert(vo);
 	}
 	
-	public void delelte(GuestbookVo vo){
+	public void delete(GuestbookVo vo){
 		guestbookDao.delete(vo);
 	}
 	
